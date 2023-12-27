@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Page</title>
+</head>
+<body>
+    <div class="container">
+        <form id="signupForm" action="{{ url_for('signup') }} " method="POST">
+            <h2>Sign Up</h2>
+            <label for="newUsername">Username</label>
+            <input type="text" id="newUsername" name="newUsername" required>
+            <label for="email">Email</label>
+            <input type="text" id="newEmail" name="newEmail" required>
+            <label for="newPassword">Password</label>
+            <input type="password" id="newPassword" name="newPassword" required>
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p class="login-link">Already have an account? <a href=" {{ url_for('login') }} ">Login here</a></p>
+        <p style="color: red; font-family: 'Times New Roman', Times, serif;">{{ text }}</p>
+    </div>
+</body>
+</html>
