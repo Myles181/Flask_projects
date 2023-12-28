@@ -50,10 +50,12 @@ def authenticate():
 
     if user and bcrypt.check_password_hash(user['password'], password):
         logging.debug("Authentication successful.")
-        return render_template('profile.html', username=user['username'], user_id=user['_id'], recent=recent_words)
+        # return render_template('profile.html', username=user['username'], user_id=user['_id'], recent=recent_words)
+        return redirect(url_for('/result/success'))
     else:
         logging.debug("Authentication failed.")
-        return render_template('login.html', text="Incorrect email or password")
+        # return render_template('login.html', text="Incorrect email or password")
+        return redirect(url_for('/result/failed'))
 
 @app.route('/signup')
 def signup():
@@ -85,12 +87,17 @@ def register():
     # Check if the email is already registered
     if user_collection.find_one({"email": email, "username": username}) is True:
         logging.debug("Email already registered.")
-        return render_template(url_for('login'), text="Email already registered")
+        # return render_template(url_for('login'), text="Email already registered")
+        return redirect(url_for('result/failed'))
 
     # Insert the user document
     user_collection.insert_one({'username': username, 'email': email, 'password': hashed_password})
     logging.debug("Registration successful.")
-    return redirect(url_for('login'))
+    return redirect(url_for('/result/success'))
+
+@app.route('/result/<str:re>', methods=['GET'])
+def result(re):
+    return re
 
 @app.route('/words', methods=['POST'])
 def get_request():
