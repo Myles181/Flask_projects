@@ -39,7 +39,7 @@ def login():
     logging.debug("Login route accessed.")
     return render_template('login.html', text="")
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['POST', 'GET'])
 def authenticate():
     logging.debug("Authentication attempt.")
     email = request.form.get('email')
@@ -62,13 +62,13 @@ def signup():
     logging.debug("Signup route accessed.")
     return render_template('signup.html')
 
-@app.route('/test', methods=['POST'])
+@app.route('/test', methods=['POST', 'GET'])
 def test():
     logging.debug("Test route accessed.")
     item = request.args.get("item")
     return jsonify({"Success": item})
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['POST', 'GET'])
 def register():
     logging.debug("Registration attempt.")
     username = request.args.get('username')
@@ -99,7 +99,7 @@ def register():
 def result(re):
     return re
 
-@app.route('/words', methods=['POST'])
+@app.route('/words', methods=['POST', 'GET'])
 def get_request():
     logging.debug("Word search request.")
     word_searched = request.json.get('word')
