@@ -95,7 +95,7 @@ def register():
     logging.debug("Registration successful.")
     return redirect(url_for('/result/success'))
 
-@app.route('/result/<str:re>', methods=['GET'])
+@app.route('/result/<re>', methods=['GET'])
 def result(re):
     return re
 
