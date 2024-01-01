@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+
+    <style>
+        body {
+            background-color: #f2f2f2; /* Set your desired background color */
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background-color: lightblue;
+            padding: 10px;
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: lightblue;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Update Profile</h1>
+    </header>
+
+    {% if user %}
+        <form method="POST" action="{{ url_for('update_profile', user_id=user['_id']) }}">
+            <label for="new_username">New Username:</label>
+            <input type="text" name="new_username" id="new_username" value="{{ user['username'] }}"><br>
+
+            <label for="new_email">New Email:</label>
+            <input type="email" name="new_email" id="new_email" value="{{ user['email'] }}"><br>
+
+            <label for="new_password">New Password:</label>
+            <input type="password" name="new_password" id="new_password"><br>
+
+            <input type="submit" value="Update Profile">
+        </form>
+    {% else %}
+        <p>User not found.</p>
+    {% endif %}
+</body>
+</html>
