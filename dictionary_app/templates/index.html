@@ -15,7 +15,8 @@
         family=Poppins$display=swap"
         rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="styles.css"/>
+
     <title>MyDictionary</title>
 </head>
 <body>
@@ -52,5 +53,48 @@
             </div>
         </div>
     </div>
+    <div id="result-container">
+        
+    </div>
+
+    <script defer>
+        // When the "Search" button is clicked
+        $('#search-btn').on('click', function () {
+            // Get the input value
+            var word = $('#inp-word').val();
+
+            // Make a POST request to the Flask route
+            $.ajax({
+                type: 'POST',
+                url: '/words',  // Updated route
+                data: JSON.stringify({ word: word }),
+                contentType: 'application/json;charset=UTF-8',
+                success: function (response) {
+                    // Handle the response from the server
+                    displayResult(response);
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                    // Display error message
+                    displayResult({ error: 'Failed to fetch data from the server.' });
+                }
+            });
+        });
+
+        // Function to display the result in the result container
+        function displayResult(result) {
+            var resultContainer = $('#result-container');
+            resultContainer.empty();
+
+            if (result.error) {
+                // Display error message
+                resultContainer.append('<p>Error: ' + result.error + '</p>');
+            } else {
+                // Display word meaning and synonyms
+                resultContainer.append('<p>Meaning: ' + result.meaning + '</p>');
+                resultContainer.append('<p>Synonyms: ' + result.synonyms.join(', ') + '</p>');
+            }
+        }
+    </script>
 </body>
 </html>

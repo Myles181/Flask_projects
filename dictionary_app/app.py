@@ -34,7 +34,7 @@ logging.basicConfig(level=logging.DEBUG)
 @app.route('/')
 def hello_world():
     logging.debug(Fore.GREEN + "Hello World route accessed.")
-    return "<h1>Hello World!</h1>"
+    return render_template('index.html')
 
 
 @app.route('/result/<re>', methods=['GET'])
@@ -212,39 +212,43 @@ def test():
 def get_word():
     """ Dictionary query function
     """
-
+    
     logging.debug(Fore.GREEN + "Word search request.")
+    
     # Get the word
     word_searched = request.json.get('word')
 
-    # Check is the word is empty
+    # Check if the word is empty
     if not word_searched:
         logging.debug(Fore.GREEN + "Word not provided in the JSON data.")
-        return "Word not provided in the JSON data."
+        return jsonify({'error': 'Word not provided in the JSON data'})
 
     api_url = f'https://api.dictionaryapi.dev/api/v2/entries/en/{word_searched}'
-
+    
     response = requests.get(api_url)
 
-    # If Successful return the response. Else retunr 
+    # If Successful return the response. Else return an error
     if response.status_code == 200:
-        """ status code is 200 when successful
-            meaning: Get the meaning of the word alweays from the 2 index 
-            synonyms: Get list of synonyms
-        """
-        logging.debug(Fore.GREEN + "Word search successful.")
-        return jsonify(response.json(
-            {
-                'status code': 200,
-                'meaning': api_url['meaning'][2],
-                'synonyms': api_url['synonyms']
-            }
-        ))
+        data = response.json()
+        if data and isinstance(data, list) and len(data) > 0:
+            # Extract meaning and synonyms from the response
+            word_data = data[0]
+            meaning = word_data.get('meanings', [])[0].get('definitions', [])[0].get('definition', '')
+            synonyms = word_data.get('meanings', [])[0].get('definitions', [])[0].get('synonyms', [])
+
+            logging.debug(Fore.GREEN + "Word search successful.")
+            return jsonify({
+                'status_code': 200,
+                'meaning': meaning,
+                'synonyms': synonyms
+            })
+        else:
+            logging.debug(Fore.GREEN + "No data found for the word.")
+            return jsonify({'error': 'No data found for the word'})
     else:
-        """ Status code fail. Any error number will be placed there
-        """
         logging.debug(Fore.GREEN + f"Error {response.status_code}: {response.text}")
-        return jsonify(response.json())
+        return jsonify({'error': f"Error {response.status_code}: {response.text}"})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
