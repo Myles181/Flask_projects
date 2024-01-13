@@ -222,13 +222,6 @@ def get_word():
         logging.debug(Fore.GREEN + "Word not provided in the JSON data.")
         return "Word not provided in the JSON data."
 
-    """ Attempted using Words Api apis but couldn't pay the subscription fee
-    api_url = f'https://wordsapiv1.p.mashape.com/words/{word_searched}'
-    headers = {
-        'X-Mashape-Key': words_api_key,
-        'Accept': 'application/json'
-    }
-    """
     api_url = f'https://api.dictionaryapi.dev/api/v2/entries/en/{word_searched}'
 
     response = requests.get(api_url)
