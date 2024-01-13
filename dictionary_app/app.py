@@ -209,7 +209,7 @@ def test():
 
 
 @app.route('/words', methods=['POST', 'GET'])
-def get_request():
+def get_word():
     """ Dictionary query function
     """
 
@@ -229,9 +229,9 @@ def get_request():
         'Accept': 'application/json'
     }
     """
-    api_url = f'https://wordsapiv1.p.mashape.com/words/{word_searched}'
+    api_url = f'https://api.dictionaryapi.dev/api/v2/entries/en/{word_searched}'
 
-    response = requests.get(api_url, headers=headers)
+    response = requests.get(api_url)
 
     # If Successful return the response. Else retunr 
     if response.status_code == 200:
